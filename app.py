@@ -199,10 +199,59 @@ def min_days_to_finish_project(cost, prerequisite):
 
     return max(min_days_to_finish_task(t) for t in cost)
 
+@app.route("/klotski", methods=["POST"])
+def klotski():
+    data = request.json
+    result = []
+    for game in data:
+        blocks = {}
+        final_board=[0 for i in range(20)]
+        count = 0
+        for cell in game.get("board"):
+            if cell not in blocks: 
+                if cell !="@":
+                    blocks[cell] = [count//4, count%4,count//4, count%4]
+            else:
+                if count//4 > blocks[cell][2]:
+                    blocks[cell][2] = count//4
+                if count%4 > blocks[cell][3]:
+                    blocks[cell][3] = count%4
+            count+=1
+        for i in range(0,len(game.get("moves")),2):
+            move = game.get("moves")[i+1]
+            if move == "E":
+                blocks[game.get("moves")[i]][1]+=1
+                blocks[game.get("moves")[i]][3]+=1
+            if move == "W":
+                blocks[game.get("moves")[i]][1]-=1
+                blocks[game.get("moves")[i]][3]-=1
+            if move == "S":
+                blocks[game.get("moves")[i]][0]+=1
+                blocks[game.get("moves")[i]][2]+=1
+            if move == "N":
+                blocks[game.get("moves")[i]][0]-=1
+                blocks[game.get("moves")[i]][2]-=1
+        for block in blocks:
+            for i in range(blocks[block][0],blocks[block][2]+1):
+                for j in range(blocks[block][1],blocks[block][3]+1):
+                    final_board[i*4+j] = block
+        for i in range(len(final_board)):
+            if final_board[i]==0:
+                final_board[i]="@"
+        result.append("".join(final_board))
+    return jsonify(result)
+        
+
+
+
+
+
+
+
 # Example
-c = {1: 5, 2: 8, 3: 13}  # tasks are [1, 2, 3]
-pre = {1: [], 2: [], 3: [1, 2]}
-print(min_days_to_finish_project(c, pre))  # 21
+# c = {1: 5, 2: 8, 3: 13}  # tasks are [1, 2, 3]
+# pre = {1: [], 2: [], 3: [1, 2]}
+# print(min_days_to_finish_project(c, pre))  # 21
 
 if __name__ == "__main__":
     app.run(debug=True)
