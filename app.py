@@ -161,7 +161,6 @@ def mailitme():
         userTimeZoneMapping[x["name"]] = x["officeHours"]["timeZone"]
     emails = data.get("emails")
     for x in emails:
-        print(x)
         x["timeSent"] = pd.Timestamp(x["timeSent"], tz=userTimeZoneMapping[x["sender"]])
     for x in emails:
         x["subject"]  = x["subject"].split("RE: ")[-1]
@@ -179,7 +178,6 @@ def mailitme():
                 userTimeSpent[emailHashMap[email][i+1]['sender']].append(temp.days*60*60*24+temp.seconds)
     for user in userTimeSpent:
         userTimeSpent[user] = round(sum(userTimeSpent[user])/len(userTimeSpent[user]))
-    print(userTimeSpent)
     
     return jsonify(userTimeSpent)
         
