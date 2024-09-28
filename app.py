@@ -145,7 +145,7 @@ def bugfixer2():
     result = []
     for x in data:
         intervals=x.get("bugseq")
-        intervals.sort(key = lambda y: y[])
+        intervals.sort(key = lambda y: y[0])
         prevInterval =  intervals[0]
         minOverlaps = 0
         for i in range(1, len(intervals)):
