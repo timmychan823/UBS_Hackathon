@@ -127,7 +127,9 @@ def calculate_efficiency(monsters, gold, stage):
 @app.route('/dodge', methods =['POST'])
 def dodge():
     data = request.json
+    result = {"instructions": null}
     print(data)
+    return jsonify(result)
     
 
 @app.route('/bugfixer/p1', methods=['POST'])
