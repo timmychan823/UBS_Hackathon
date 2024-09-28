@@ -3,6 +3,7 @@ from flask import request
 import json
 import random
 from functools import cache
+import pandas as pd 
 
 app = Flask(__name__)
 
@@ -123,6 +124,12 @@ def calculate_efficiency(monsters, gold, stage):
     return max_gold
 
 
+@app.route('/dodge', methods =['POST'])
+def dodge():
+    data = request.json
+    print(data)
+    
+
 @app.route('/bugfixer/p1', methods=['POST'])
 def bugfixer():
     data = request.json
@@ -138,6 +145,31 @@ def bugfixer():
             preq_dict[y[1]].append(y[0])
         result.append(min_days_to_finish_project(time_dict,preq_dict))
     return jsonify(result)
+
+@app.route('/mailtime', methods=['POST'])
+def mailitme():
+    data = result.json
+    result = []
+    userTimeZoneMapping = {}
+    emailHashMap = {}
+    for x in data.get("users"):
+        userTimeZoneMapping[x["name"]] = x["officeHours"]["timeZone"]
+    emails = data.get("emails")
+    for x in emails:
+        x["timeSent"] = pd.Timestamp(x["timeSent"], tz=[x["sender"]])
+    for x in emails:
+        x["subject"]  = x["subject"].split("RE: ")[-1]
+        if x["subject"] not in emailHashMap:
+            emailHashMap[x["subject"]]=[x]
+        else:
+            emailHashMap[x["subject"]].append(x)
+    for email in emailHashMap:
+        emailHashMap[email].sort(key = lambda y: y["timeSent"])
+        
+        
+    
+        
+
 
 @app.route('/bugfixer/p2', methods=['POST']) 
 def bugfixer2():
