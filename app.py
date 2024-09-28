@@ -190,8 +190,18 @@ def coolcodehack():
     }       
     return jsonify(result)
 
+@app.route('/ub5-flags', methods=[])
+def ub5_flags():
+    data = result.json
+    print(data)
+    result = {"sanityScroll": {
+        "flag": "UB5{FLAG_CONTENT_HERE}"
+        }
+    }
+    return json(result)
+    
 
-@app.route('/bugfixer/p2', methods=['POST']) 
+@app.route('/bugfixer/p2', methods=['GET']) 
 def bugfixer2():
     data = result.json
     result = []
