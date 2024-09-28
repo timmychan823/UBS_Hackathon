@@ -152,15 +152,17 @@ def bugfixer():
 
 @app.route('/mailtime', methods=['POST'])
 def mailitme():
-    data = result.json
-    result = []
+    data = request.json
+    result = {}
     userTimeZoneMapping = {}
     emailHashMap = {}
+    userTimeSpent={}
     for x in data.get("users"):
         userTimeZoneMapping[x["name"]] = x["officeHours"]["timeZone"]
     emails = data.get("emails")
     for x in emails:
-        x["timeSent"] = pd.Timestamp(x["timeSent"], tz=[x["sender"]])
+        print(x)
+        x["timeSent"] = pd.Timestamp(x["timeSent"], tz=userTimeZoneMapping[x["sender"]])
     for x in emails:
         x["subject"]  = x["subject"].split("RE: ")[-1]
         if x["subject"] not in emailHashMap:
@@ -169,6 +171,15 @@ def mailitme():
             emailHashMap[x["subject"]].append(x)
     for email in emailHashMap:
         emailHashMap[email].sort(key = lambda y: y["timeSent"])
+        for i in range(len(emailHashMap[email])-1):
+            temp=pd.Timedelta(emailHashMap[email][i+1]['timeSent']-emailHashMap[email][i]['timeSent'])
+            if emailHashMap[email][i+1]['sender'] not in userTimeSpent:
+                userTimeSpent[emailHashMap[email][i+1]['sender']] = [temp.days*60*60*24+temp.seconds]
+            else:
+                userTimeSpent[emailHashMap[email][i+1]['sender']].append(temp.days*60*60*24+temp.seconds)
+    for user in userTimeSpent:
+        userTimeSpent[user] = round(sum(userTimeSpent[user])/len(userTimeSpent[user]))
+    return jsonify(userTimeSpent)
         
         
     
