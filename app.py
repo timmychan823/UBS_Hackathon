@@ -50,7 +50,7 @@ def wordle_game():
 
                 
                 
-    return jsonify(guess)
+    return json.dumps(guess)
 
 
 @app.route('/efficient-hunter-kazuma', methods=['POST'])
