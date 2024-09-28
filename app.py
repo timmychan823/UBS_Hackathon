@@ -128,6 +128,7 @@ def bugfixer():
     data = request.json
     result = []
     for x in data:
+        print(x.get("time"))
         time_dict = dict()
         preq_dict = dict()
         for i in range(len(x.get("time"))):
