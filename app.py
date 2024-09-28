@@ -125,7 +125,6 @@ def calculate_efficiency(monsters, gold, stage):
 
 @app.route('/bugfixer/p1', methods=['POST'])
 def bugfixer():
-    print(request)
     content = request.json
     print(content)
     data = f'{data}'
