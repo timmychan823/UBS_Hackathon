@@ -47,6 +47,7 @@ def wordle_game():
     #     print(characters)
     #     print(wrong_positions)
     guess = {"guess":"choir"}
+    print(content)
 
                 
                 
