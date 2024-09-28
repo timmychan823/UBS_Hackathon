@@ -20,9 +20,9 @@ def wordle_game():
             for j in range(5):
                 if content["evaluationHistory"][i][j] == "X":
                     wrong_positions.append(content["guessHistory"][i][j])
-                else if content["evaluationHistory"][i][j] == "-":
+                elif content["evaluationHistory"][i][j] == "-":
                     characters.remove(content["guessHistory"][i][j])
-                else if content["evaluationHistory"][i][j] == "O":
+                elif content["evaluationHistory"][i][j] == "O":
                     correct[j]=content["guessHistory"][i][j]
         if len(content['guessHistory'])!=5:
             correct = random.choices(characters, 5) 
