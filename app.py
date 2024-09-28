@@ -178,7 +178,7 @@ def coolcodehack():
         "username": "timmychan823",
         "password": "Hkma#00001"
     }       
-    return json.dumps(result)
+    return jsonify(result)
 
 
 @app.route('/bugfixer/p2', methods=['POST']) 
