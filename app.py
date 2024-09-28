@@ -39,6 +39,9 @@ def wordle_game():
                         correct[j]="".join(random.choices(characters,k=1))
         correct = "".join(correct)
         guess={"guess":correct}
+        print(content)
+        print(guess)
+    
 
                 
                 
