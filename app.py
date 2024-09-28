@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 import json
 import random
@@ -69,7 +69,7 @@ def efficient_hunter_kazuma():
         results.append({"efficiency": efficiency})
 
     print(results)
-    return json.dumps(results)
+    return jsonify(results, status=200, mimetype='application/json')
 
 def calculate_efficiency(monsters, gold, stage):
     list=[]
@@ -125,22 +125,18 @@ def calculate_efficiency(monsters, gold, stage):
 
 @app.route('/bugfixer/p1', methods=['POST'])
 def bugfixer():
-    content = request
-    print(content)
-    data = f'{content}'
-    data = data.replace("\'", "\"")
-    data=json.loads(f'{data}')
+    data = request.json
     result = []
     for x in data:
         time_dict = dict()
         preq_dict = dict()
-        for i in range(len(x["time"])):
-            time_dict[i+1] =  x["time"][i]
+        for i in range(len(x.get("time"))):
+            time_dict[i+1] =  x.get("time")[i]
             preq_dict[i+1] = []
-        for y in x["prerequisites"]:
+        for y in x.get("prerequisites"):
             preq_dict[y[1]].append(y[0])
         result.append(min_days_to_finish_project(time_dict,preq_dict))
-    print(result)
+    return jsonify(result, status=200, mimetype='application/json')
 
         
 
