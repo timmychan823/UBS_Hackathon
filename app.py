@@ -137,7 +137,7 @@ def bugfixer():
         for y in x.get("prerequisites"):
             preq_dict[y[1]].append(y[0])
         result.append(min_days_to_finish_project(time_dict,preq_dict))
-    return jsonify(result, status=200, mimetype='application/json')
+    return jsonify(result)
 
         
 
