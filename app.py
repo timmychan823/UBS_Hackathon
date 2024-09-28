@@ -139,8 +139,24 @@ def bugfixer():
         result.append(min_days_to_finish_project(time_dict,preq_dict))
     return jsonify(result)
 
-        
-
+@app.route('/bugfixer/p2', methods=['POST']) 
+def bugfixer2():
+    data = result.json
+    result = []
+    for x in data:
+        intervals=x.get("bugseq")
+        intervals.sort(key = lambda y: y[])
+        prevInterval =  intervals[0]
+        minOverlaps = 0
+        for i in range(1, len(intervals)):
+            currInterval = intervals[i]
+            if currInterval[0] <prevInterval[1]:
+                minOverlaps+=1
+                prevInterval = prevInterval if prevInterval[1] < currInterval[1] else currInterval
+            else:
+                prevInterval = currInterval
+        result.append(minOverlaps)
+    return jsonify(result)
 
 
 
