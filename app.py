@@ -172,7 +172,13 @@ def mailitme():
         
         
     
-        
+@app.route('/coolcodehack', methods=['POST'])
+def coolcodehack():
+    result =  {
+        "username": "timmychan823",
+        "password": "Hkma#00001"
+    }       
+    return json.dumps(result)
 
 
 @app.route('/bugfixer/p2', methods=['POST']) 
