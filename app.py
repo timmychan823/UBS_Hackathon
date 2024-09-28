@@ -192,7 +192,7 @@ def coolcodehack():
 
 @app.route('/ub5-flags', methods=[])
 def ub5_flags():
-    data = result.json
+    data = result
     print(data)
     result = {"sanityScroll": {
         "flag": "UB5{FLAG_CONTENT_HERE}"
