@@ -179,6 +179,8 @@ def mailitme():
                 userTimeSpent[emailHashMap[email][i+1]['sender']].append(temp.days*60*60*24+temp.seconds)
     for user in userTimeSpent:
         userTimeSpent[user] = round(sum(userTimeSpent[user])/len(userTimeSpent[user]))
+    print(userTimeSpent)
+    
     return jsonify(userTimeSpent)
         
         
