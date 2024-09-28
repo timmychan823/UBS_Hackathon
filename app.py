@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 import json
 import random
+from functools import cache
 
 app = Flask(__name__)
 
@@ -70,7 +71,6 @@ def efficient_hunter_kazuma():
     print(results)
     return json.dumps(results)
 
-
 def calculate_efficiency(monsters, gold, stage):
     list=[]
     if stage == 0:
@@ -121,6 +121,44 @@ def calculate_efficiency(monsters, gold, stage):
     max_gold = max(list)
 
     return max_gold
+
+
+@app.route('/bugfixer/p1', methods=['POST'])
+def bugfixer():
+    print(request)
+    content = request.json
+    print(content)
+    data = f'{data}'
+    data = data.replace("\'", "\"")
+    data=json.loads(f'{data}')
+    result = []
+    for x in data:
+        time_dict = dict()
+        preq_dict = dict()
+        for i in range(len(x["time"])):
+            time_dict[i+1] =  x["time"][i]
+            preq_dict[i+1] = []
+        for y in x["prerequisites"]:
+            preq_dict[y[1]].append(y[0])
+        result.append(min_days_to_finish_project(time_dict,preq_dict))
+    print(result)
+
+        
+
+
+
+
+def min_days_to_finish_project(cost, prerequisite):
+    @cache
+    def min_days_to_finish_task(t):
+        return cost[t] + max((min_days_to_finish_task(p) for p in prerequisite[t]),default=0)
+
+    return max(min_days_to_finish_task(t) for t in cost)
+
+# Example
+c = {1: 5, 2: 8, 3: 13}  # tasks are [1, 2, 3]
+pre = {1: [], 2: [], 3: [1, 2]}
+print(min_days_to_finish_project(c, pre))  # 21
 
 if __name__ == "__main__":
     app.run(debug=True)
