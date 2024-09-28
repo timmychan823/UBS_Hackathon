@@ -184,6 +184,7 @@ def mailitme():
     
 @app.route('/coolcodehack', methods=['POST'])
 def coolcodehack():
+    print(request)
     result =  {
         "username": "timmychan823",
         "password": "Hkma#00001"
